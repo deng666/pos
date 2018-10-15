@@ -12,22 +12,25 @@
                   <el-table-column prop="price" label="金额" align="center"></el-table-column>
                   <el-table-column fixed="right" label="操作" align="center" width="100">
                     <template slot-scope="scope">
-                      <el-button @click="handleClick(scope.row)" type="text" size="small">增加</el-button>
+                      <el-button @click="addOliderList(scope.row)" type="text" size="small">增加</el-button>
                       <el-button @click.native.prevent="deleteRow(scope.$index, tableData)" type="text" size="small">删除</el-button>
                     </template>
                   </el-table-column>
                 </el-table>
               </template>
+              <div class="pp-total-wrap">
+                <small>数量：</small><span>{{totalCount}}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                <small>总计：</small><span>{{totalMoney}}</span> 元
+              </div>
               <div class="pp-btn">
                 <el-button type="warning">挂单</el-button>
-                <el-button type="danger">删除</el-button>
-                <el-button type="success">结账</el-button>
+                <el-button type="danger" @click="deleteAll()">删除</el-button>
+                <el-button type="success" @click="checkOut()">结账</el-button>
               </div>
             </el-tab-pane>
             <el-tab-pane label="挂单">挂单</el-tab-pane>
             <el-tab-pane label="外卖">外卖</el-tab-pane>
           </el-tabs>
-
         </template>
       </el-col>
       <el-col :span="16">
@@ -35,7 +38,7 @@
           <div class="pp-shaop-title">常用商品</div>
           <div class="pp-shop-item">
             <ul class="clearfix">
-              <li v-for="item in oftenGoods">
+              <li v-for="item in foodlist" :key="item.goodsId" @click="addOliderList(item)">
                 <span>{{item.goodsName}}</span>
                 <span class="pp-shop-price">¥{{item.price}}元</span>
               </li>
@@ -48,19 +51,55 @@
               <el-tab-pane label="汉堡">
                 <div>
                   <ul class="pp-cook-item clearfix">
-                    <li class="pp-cook-list" v-for="item in foodlist">
-                      <div class="pp-foodimg"><img :src="item.img" alt=""></div>
+                    <li class="pp-cook-list" v-for="item in often0Goods" :key="item.goodsId"  @click="addOliderList(item)">
+                      <div class="pp-foodimg"><img :src="item.goodsImg" alt=""></div>
                       <div class="pp-food-detail">
-                        <div class="pp-food-title">{{item.foodName}}</div>
+                        <div class="pp-food-title">{{item.goodsName}}</div>
                         <div class="pp-food-price">¥{{item.price}}元</div>
                       </div>                      
                     </li>
                   </ul>
                 </div>
               </el-tab-pane>
-              <el-tab-pane label="小食">小食</el-tab-pane>
-              <el-tab-pane label="饮料">饮料</el-tab-pane>
-              <el-tab-pane label="套餐">套餐</el-tab-pane>
+              <el-tab-pane label="小食">
+                <div>
+                  <ul class="pp-cook-item clearfix">
+                    <li class="pp-cook-list" v-for="item in often1Goods" :key="item.goodsId"  @click="addOliderList(item)">
+                      <div class="pp-foodimg"><img :src="item.goodsImg" alt=""></div>
+                      <div class="pp-food-detail">
+                        <div class="pp-food-title">{{item.goodsName}}</div>
+                        <div class="pp-food-price">¥{{item.price}}元</div>
+                      </div>                      
+                    </li>
+                  </ul>
+                </div>
+              </el-tab-pane>
+              <el-tab-pane label="饮料">
+                <div>
+                  <ul class="pp-cook-item clearfix">
+                    <li class="pp-cook-list" v-for="item in often2Goods" :key="item.goodsId"  @click="addOliderList(item)">
+                      <div class="pp-foodimg"><img :src="item.goodsImg" alt=""></div>
+                      <div class="pp-food-detail">
+                        <div class="pp-food-title">{{item.goodsName}}</div>
+                        <div class="pp-food-price">¥{{item.price}}元</div>
+                      </div>                      
+                    </li>
+                  </ul>
+                </div>
+              </el-tab-pane>
+              <el-tab-pane label="套餐">
+                <div>
+                  <ul class="pp-cook-item clearfix">
+                    <li class="pp-cook-list" v-for="item in often3Goods" :key="item.goodsId"  @click="addOliderList(item)">
+                      <div class="pp-foodimg"><img :src="item.goodsImg" alt=""></div>
+                      <div class="pp-food-detail">
+                        <div class="pp-food-title">{{item.goodsName}}</div>
+                        <div class="pp-food-price">¥{{item.price}}元</div>
+                      </div>                      
+                    </li>
+                  </ul>
+                </div>
+              </el-tab-pane>
             </el-tabs>
           </template>
         </div>
@@ -69,189 +108,102 @@
   </div>
 </template>
 <script>
+import axios from 'axios'
 export default {
   data(){
     return {
-      tableData: [{
-        goodsName: '火锅',
-        count: '1',
-        price: '25'
-      }, {
-        goodsName: '猪蹄',
-        count: '1',
-        price: '30'
-      }, {
-        goodsName: '臭豆腐',
-        count: '1',
-        price: '35'
-      }, {
-        goodsName: '棉花糖',
-        count: '2',
-        price: '22'
-      }],
-      oftenGoods: [
-        {
-          goodsId: 1,
-          goodsName: '香辣鸡腿堡',
-          price: 18
-        },
-        {
-          goodsId: 2,
-          goodsName: '香辣鸡腿堡',
-          price: 18
-        },
-        {
-          goodsId: 3,
-          goodsName: '香辣鸡腿堡',
-          price: 18
-        },
-        {
-          goodsId: 4,
-          goodsName: '香辣鸡腿堡',
-          price: 18
-        },
-        {
-          goodsId: 5,
-          goodsName: '香辣鸡腿堡',
-          price: 18
-        },
-        {
-          goodsId: 6,
-          goodsName: '香辣鸡腿堡',
-          price: 18
-        },
-        {
-          goodsId: 7,
-          goodsName: '香辣鸡腿堡',
-          price: 18
-        },
-        {
-          goodsId: 8,
-          goodsName: '香辣鸡腿堡',
-          price: 18
-        },
-        {
-          goodsId: 9,
-          goodsName: '香辣鸡腿堡',
-          price: 18
-        },
-        {
-          goodsId: 10,
-          goodsName: '香辣鸡腿堡',
-          price: 18
-        }
-      ],
-      foodlist: [
-        {
-          foodId: 1,
-          foodName: '香辣鸡腿堡',
-          price: 18,
-          img: 'static/img/hamburger.png'
-        },
-        {
-          foodId: 1,
-          foodName: '香辣鸡腿堡',
-          price: 18,
-          img: 'static/img/hamburger.png'
-        },
-        {
-          foodId: 1,
-          foodName: '香辣鸡腿堡',
-          price: 18,
-          img: 'static/img/hamburger.png'
-        },
-        {
-          foodId: 1,
-          foodName: '香辣鸡腿堡',
-          price: 18,
-          img: 'static/img/hamburger.png'
-        },
-        {
-          foodId: 1,
-          foodName: '香辣鸡腿堡',
-          price: 18,
-          img: 'static/img/hamburger.png'
-        },
-        {
-          foodId: 1,
-          foodName: '香辣鸡腿堡',
-          price: 18,
-          img: 'static/img/hamburger.png'
-        },
-        {
-          foodId: 1,
-          foodName: '香辣鸡腿堡',
-          price: 18,
-          img: 'static/img/hamburger.png'
-        },
-        {
-          foodId: 1,
-          foodName: '香辣鸡腿堡',
-          price: 18,
-          img: 'static/img/hamburger.png'
-        },
-        {
-          foodId: 1,
-          foodName: '香辣鸡腿堡',
-          price: 18,
-          img: 'static/img/hamburger.png'
-        },
-        {
-          foodId: 1,
-          foodName: '香辣鸡腿堡',
-          price: 18,
-          img: 'static/img/hamburger.png'
-        },
-        {
-          foodId: 1,
-          foodName: '香辣鸡腿堡',
-          price: 18,
-          img: 'static/img/hamburger.png'
-        },
-        {
-          foodId: 1,
-          foodName: '香辣鸡腿堡',
-          price: 18,
-          img: 'static/img/hamburger.png'
-        },
-        {
-          foodId: 1,
-          foodName: '香辣鸡腿堡',
-          price: 18,
-          img: 'static/img/hamburger.png'
-        },
-        {
-          foodId: 1,
-          foodName: '香辣鸡腿堡',
-          price: 18,
-          img: 'static/img/hamburger.png'
-        },
-        {
-          foodId: 1,
-          foodName: '香辣鸡腿堡',
-          price: 18,
-          img: 'static/img/hamburger.png'
-        },
-        {
-          foodId: 1,
-          foodName: '香辣鸡腿堡',
-          price: 18,
-          img: 'static/img/hamburger.png'
-        }
-      ]
+      tableData: [],
+      totalCount: 0,
+      totalMoney: 0,
+      often0Goods: [],
+      often1Goods: [],
+      often2Goods: [],
+      often3Goods: [],
+      foodlist: []
     }
   },
-  mounted:function(){
+  mounted(){
     var oredrHeight = document.body.clientHeight
     // console.log(oredrHeight);
     document.getElementById('order-list').style.height = oredrHeight + 'px'
+    axios.get('https://www.easy-mock.com/mock/5b8b30dbf032f03c5e71de7f/kuaican/oftenGoods').then(res => {
+      this.foodlist = res.data
+      // console.log(res)
+    }).catch(error => {
+      alert('网络错误，不能访问')
+    }),
+    axios.get('https://www.easy-mock.com/mock/5b8b30dbf032f03c5e71de7f/kuaican/typeGoods').then(res => {     this.often0Goods = res.data[0]
+      this.often1Goods = res.data[1]
+      this.often2Goods = res.data[2]
+      this.often3Goods = res.data[3]
+      console.log(res)
+    }).catch(error => {
+      alert('网络错误，不能访问')
+    })
   },
   methods: {
-    handleClick(row) {
-      console.log(row);
-    },
+    // 删除一行
     deleteRow(index, rows) {
-      rows.splice(index, 1);
+      rows.splice(index, 1)
+      this.getMoney();
+    },
+    // 汇总数量和金额
+    getMoney() {
+      this.totalCount = 0
+      this.totalMoney = 0
+      if(this.tableData) {
+        this.tableData.filter((item) => {
+          this.totalCount += item.count
+          this.totalMoney = this.totalMoney + (item.price*item.count)
+        })
+      }
+    },
+    addOliderList(item) {
+      this.totalCount = 0
+      this.totalMoney = 0
+      //商品是否已存在于订单列表中
+      let isHave = false
+      for(let i=0; i<this.tableData.length; i++) {
+        if(this.tableData[i].goodsId == item.goodsId) {
+          isHave = true
+        }
+      }
+      //根据判断的值编写业务逻辑
+      if(isHave) {
+        let arr = this.tableData.filter((o) => o.goodsId == item.goodsId)
+        arr[0].count++
+      } else {
+        let newGoods = {
+          goodsId: item.goodsId,
+          goodsName: item.goodsName,
+          price: item.price,
+          count: 1
+        }
+        this.tableData.push(newGoods)
+      }
+      this.getMoney()
+    },
+    // 删除全部商品
+    deleteAll() {
+      this.tableData = []
+      this.getMoney()
+    },
+    // 结账
+    checkOut() {
+      if (this.totalCount != 0) {
+        this.tableData = []
+        this.totalCount = 0
+        this.totalMoney = 0
+        this.$message({
+          message: '恭喜你，结账成功！',
+          type: 'success'
+        })
+      } else {
+        this.$message({
+          message: '请确认订单！',
+          type: 'error'
+        })
+      }
     }
   }
 }
@@ -285,6 +237,7 @@ li {
       padding: 5px 10px;
       margin: 5px 10px;
       background-color: #fff;
+      cursor: pointer;
       .pp-shop-price {
         color: #409EFF;
         margin-left: 5px;
@@ -304,6 +257,7 @@ li {
   float: left;
   margin-right: 20px;
   margin-bottom: 20px;
+  cursor: pointer;
   .pp-foodimg {
     position: absolute;
     top: 50%;
@@ -321,6 +275,13 @@ li {
   content: '';
   display: block;
   clear: both;
+}
+.pp-total-wrap {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  span {
+    color: #fa5a4b;
+  }
 }
 </style>
 <style lang="less">
