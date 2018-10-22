@@ -6,27 +6,26 @@
 </template>
 
 <script>
-export default {
-  props: ['item'],
-  data() {
-    return {
-      isActive: false
-    }
-  },
-  methods: {
-    toggle() {
-      this.isActive = !this.isActive
-    }
-  },
-  computed:{
-    text:function(){
-      if(this.isActive == false){　　　　　　　//对文字进行处理
-        return '展开'
-      }else{
-        return '收起'
+  export default {
+    props: ['item'],
+    data() {
+      return {
+        isActive: false
+      }
+    },
+    methods: {
+      toggle() {
+        this.isActive = !this.isActive
+      }
+    },
+    computed:{
+      text:function(){
+        if(this.isActive == false){//对文字进行处理
+          return '展开'
+        }else{
+          return '收起'
+        }
       }
     }
   }
-}
 </script>
-

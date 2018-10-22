@@ -133,10 +133,10 @@ export default {
         age: 12,
         love: [
           {id: 1, name: '唱歌'},
-          {id: 2,name: '跳舞'},
-          {id: 3,name: '看书'},
-          {id: 4,name: '下棋'},
-          {id: 5,name: '旅游'},
+          {id: 2, name: '跳舞'},
+          {id: 3, name: '看书'},
+          {id: 4, name: '下棋'},
+          {id: 5, name: '旅游'},
         ]},
         {
           id: 2,
@@ -144,27 +144,25 @@ export default {
           age: 5,
           love: [
             {id: 6, name: '唱歌'},
-            {id: 7,name: '跳舞'},
-            {id: 8,name: '看书'}
-          ]
-        },
+            {id: 7, name: '跳舞'},
+            {id: 8, name: '看书'}
+          ]},
         {
           id: 3,
           name: 'javascript',
           age: 10,
           love: [
-            {id: 9,name: '唱歌'},
-            {id: 10,name: '跳舞'}
-          ]
-        },
+            {id: 9, name: '唱歌'},
+            {id: 10, name: '跳舞'}
+          ]},
         {
           id: 4,
           name: 'jquery',
           age: 2,
           love: [
-          {id: 11,name: '唱歌'}
-        ]
-      }],
+          {id: 11, name: '唱歌'}
+        ]}
+      ],
       tableData: [],
       totalCount: 0,
       totalMoney: 0,
@@ -185,7 +183,7 @@ export default {
   //     }
   //   }
   // },
-  mounted(){
+  mounted() {
     var oredrHeight = document.body.clientHeight
     // console.log(oredrHeight);
     document.getElementById('order-list').style.height = oredrHeight + 'px'
