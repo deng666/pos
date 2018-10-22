@@ -45,6 +45,12 @@
             </ul>
           </div>
         </div>
+        <!-- <template>
+          <div class="hello">
+              <div v-for='item in showList'>{{item}}</div>
+              <div @click="isActive = !isActive" class="show-more">{{word}}</div>
+          </div>
+        </template> -->
         <div class="pp-type">
           <template>
             <el-tabs>
@@ -103,15 +109,62 @@
             </el-tabs>
           </template>
         </div>
+        <div class="wrap" v-for="item in toLearnList" :key="item.id" style="margin-bottom: 20px">
+          <div>{{item.name}}</div>
+          <List :item="item"></List>            
+        </div>
       </el-col>
-    </el-row>
+    </el-row>    
   </div>
 </template>
 <script>
 import axios from 'axios'
+import List from '@/components/page/list.vue'
+
 export default {
+  components: {
+    List
+  },
   data(){
     return {
+      toLearnList:[{
+        id: 1,
+        name: 'html',
+        age: 12,
+        love: [
+          {id: 1, name: '唱歌'},
+          {id: 2,name: '跳舞'},
+          {id: 3,name: '看书'},
+          {id: 4,name: '下棋'},
+          {id: 5,name: '旅游'},
+        ]},
+        {
+          id: 2,
+          name: 'vue',
+          age: 5,
+          love: [
+            {id: 6, name: '唱歌'},
+            {id: 7,name: '跳舞'},
+            {id: 8,name: '看书'}
+          ]
+        },
+        {
+          id: 3,
+          name: 'javascript',
+          age: 10,
+          love: [
+            {id: 9,name: '唱歌'},
+            {id: 10,name: '跳舞'}
+          ]
+        },
+        {
+          id: 4,
+          name: 'jquery',
+          age: 2,
+          love: [
+          {id: 11,name: '唱歌'}
+        ]
+      }],
       tableData: [],
       totalCount: 0,
       totalMoney: 0,
@@ -119,7 +172,17 @@ export default {
       often1Goods: [],
       often2Goods: [],
       often3Goods: [],
-      foodlist: []
+      foodlist: [],
+      isActive:false,
+    }
+  },
+  computed:{
+    word:function(){
+      if(this.isActive == false){　　　　　　　　　　　//对文字进行处理
+        return '展开'
+      }else{
+        return '收起'
+      }
     }
   },
   mounted(){
@@ -132,16 +195,19 @@ export default {
     }).catch(error => {
       alert('网络错误，不能访问')
     }),
-    axios.get('https://www.easy-mock.com/mock/5b8b30dbf032f03c5e71de7f/kuaican/typeGoods').then(res => {     this.often0Goods = res.data[0]
+    axios.get('https://www.easy-mock.com/mock/5b8b30dbf032f03c5e71de7f/kuaican/typeGoods').then(res => {     
+      this.often0Goods = res.data[0]
       this.often1Goods = res.data[1]
       this.often2Goods = res.data[2]
       this.often3Goods = res.data[3]
-      console.log(res)
     }).catch(error => {
       alert('网络错误，不能访问')
     })
   },
   methods: {
+    toggle() {
+      this.isActive = !this.isActive;
+    },
     // 删除一行
     deleteRow(index, rows) {
       rows.splice(index, 1)
@@ -208,7 +274,6 @@ export default {
   }
 }
 </script>
-
 <style lang="less" scoped>
 li {
   list-style: none;
