@@ -173,18 +173,18 @@ export default {
       often2Goods: [],
       often3Goods: [],
       foodlist: [],
-      isActive:false,
+      // isActive:false,
     }
   },
-  computed:{
-    word:function(){
-      if(this.isActive == false){　　　　　　　　　　　//对文字进行处理
-        return '展开'
-      }else{
-        return '收起'
-      }
-    }
-  },
+  // computed:{
+  //   word:function(){
+  //     if(this.isActive == false){　　　　　　　　　　　//对文字进行处理
+  //       return '展开'
+  //     }else{
+  //       return '收起'
+  //     }
+  //   }
+  // },
   mounted(){
     var oredrHeight = document.body.clientHeight
     // console.log(oredrHeight);
@@ -205,9 +205,9 @@ export default {
     })
   },
   methods: {
-    toggle() {
-      this.isActive = !this.isActive;
-    },
+    // toggle() {
+    //   this.isActive = !this.isActive;
+    // },
     // 删除一行
     deleteRow(index, rows) {
       rows.splice(index, 1)
