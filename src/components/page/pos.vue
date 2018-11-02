@@ -32,6 +32,69 @@
             <el-tab-pane label="外卖">外卖</el-tab-pane>
           </el-tabs>
         </template>
+        <template>
+          <el-row>
+            <el-col :span="10">
+              接电话时
+            </el-col>
+            <el-col :sapn="14">
+              <el-select v-model="form.value1" placeholder="请选择">
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </el-col>           
+          </el-row>
+          <el-row>
+            <el-col :span="10">
+              dmfvh
+            </el-col>
+            <el-col :sapn="14">
+              <el-select v-model="form.value2" placeholder="请选择">
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </el-col>           
+          </el-row>
+          <el-row>
+            <el-col :span="10">
+              f 
+            </el-col>
+            <el-col :sapn="14">
+              <el-select v-model="form.value3" placeholder="请选择">
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </el-col>           
+          </el-row>
+          <el-row>
+            <el-col :span="10">
+              xfb
+            </el-col>
+            <el-col :sapn="14">
+              <el-select v-model="form.value4" placeholder="请选择">
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </el-col>           
+          </el-row>
+          <el-button type="danger" @click="clear">重置</el-button>
+        </template>
       </el-col>
       <el-col :span="16">
         <div class="pp-shop-wrap">
@@ -127,6 +190,28 @@ export default {
   },
   data(){
     return {
+      options: [{
+          value: '选项1',
+          label: '黄金糕'
+        }, {
+          value: '选项2',
+          label: '双皮奶'
+        }, {
+          value: '选项3',
+          label: '蚵仔煎'
+        }, {
+          value: '选项4',
+          label: '龙须面'
+        }, {
+          value: '选项5',
+          label: '北京烤鸭'
+        }],
+        form: {
+          value1: '',
+          value2: '',
+          value3: '',
+          value4: '',
+        },       
       toLearnList:[{
         id: 1,
         name: 'html',
@@ -207,8 +292,22 @@ export default {
     //   this.isActive = !this.isActive;
     // },
     // 删除一行
+    clear() {
+      this.form.value1 = ''
+      this.form.value2 = ''
+      this.form.value3 = ''
+      this.form.value4 = ''
+    },
     deleteRow(index, rows) {
-      rows.splice(index, 1)
+      this.$confirm('确认删除吗？')
+        .then(_ => {
+          rows.splice(index, 1)
+          this.$message({
+            showClose: true,
+            message: '恭喜你，这是一条删除成功',
+            type: 'success'
+          })
+        }).catch(_ => {});
       this.getMoney();
     },
     // 汇总数量和金额
